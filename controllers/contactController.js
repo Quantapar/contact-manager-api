@@ -3,15 +3,15 @@ const Contact = require("../models/contactModel");
 
 // @desc Get All contacts
 // @desc Get Api/contacts
-// @desc access public
+// @desc access private
 const getContact = asyncHandler(async (req, res) => {
-  const contacts = await Contact.find();
+  const contacts = await Contact.find({ user_id: req.user.id });
   res.status(200).json(contacts);
 });
 
 // @desc Create contacts
 // @desc Post Api/contacts
-// @desc access public
+// @desc access private
 
 const CreateContact = asyncHandler(async (req, res) => {
   const { name, email, phone } = req.body;
@@ -23,13 +23,14 @@ const CreateContact = asyncHandler(async (req, res) => {
     name,
     email,
     phone,
+    user_id: req.user.id,
   });
   res.status(201).json(contact);
 });
 
 // @desc Get contact with id
 // @desc Get Api/contacts/id
-// @desc access public
+// @desc access private
 
 const getParticularContact = asyncHandler(async (req, res) => {
   const id = req.params.id;
@@ -43,7 +44,7 @@ const getParticularContact = asyncHandler(async (req, res) => {
 
 // @desc update contacts
 // @desc put Api/contacts/:id
-// @desc access public
+// @desc access private
 
 const UpdateContact = asyncHandler(async (req, res) => {
   const id = req.params.id;
@@ -52,6 +53,10 @@ const UpdateContact = asyncHandler(async (req, res) => {
   if (!contact) {
     res.status(404);
     throw new Error("no contact with such id exist");
+  }
+  if (contact.user_id.toString() != req.user.id) {
+    res.status(403);
+    throw new Error("user can't access other user's contacts");
   }
   const Updatedcontact = await Contact.findByIdAndUpdate(id, req.body, {
     new: true,
@@ -62,7 +67,7 @@ const UpdateContact = asyncHandler(async (req, res) => {
 
 // @desc delete contact
 // @desc Delete Api/contacts/:id
-// @desc access public
+// @desc access private
 
 const DeleteContact = asyncHandler(async (req, res) => {
   const id = req.params.id;
@@ -70,6 +75,10 @@ const DeleteContact = asyncHandler(async (req, res) => {
   if (!contact) {
     res.status(404);
     throw new Error("no user with this id exists");
+  }
+  if (contact.user_id.toString() != req.user.id) {
+    res.status(403);
+    throw new Error("user can't delete other user's contacts");
   }
   const deletdconatct = await Contact.findByIdAndDelete(id);
   res.status(200).json("contact deleted");

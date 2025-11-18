@@ -1,48 +1,51 @@
 const { constants } = require("../constants");
 
 const errorHandler = (err, req, res, next) => {
-  const statusCode = res.statusCode ? res.statusCode : 500;
+  const statusCode = res.statusCode !== 200 ? res.statusCode : 500;
 
   switch (statusCode) {
     case constants.VALIDATION_ERROR:
-      return res.json({
+      return res.status(statusCode).json({
         title: "Validation Failed",
         message: err.message,
         stackTrace: err.stack,
       });
 
     case constants.NOT_FOUND:
-      return res.json({
+      return res.status(statusCode).json({
         title: "Not Found",
         message: err.message,
         stackTrace: err.stack,
       });
 
     case constants.UNAUTHORIZED:
-      return res.json({
+      return res.status(statusCode).json({
         title: "Unauthorized",
         message: err.message,
         stackTrace: err.stack,
       });
 
     case constants.FORBIDDEN:
-      return res.json({
+      return res.status(statusCode).json({
         title: "Forbidden",
         message: err.message,
         stackTrace: err.stack,
       });
 
     case constants.SERVER_ERROR:
-      return res.json({
+      return res.status(statusCode).json({
         title: "Server Error",
         message: err.message,
         stackTrace: err.stack,
       });
 
     default:
-      console.log("no error all good");
-
-      return;
+      //   MUST send a response here
+      return res.status(statusCode).json({
+        title: "Error",
+        message: err.message,
+        stackTrace: err.stack,
+      });
   }
 };
 
