@@ -1,22 +1,15 @@
-# Contact Manager Backend
+# Contact Manager API
 
-A RESTful backend API for managing contacts, built with Node.js and Express.js. This project demonstrates core backend development concepts including API design, database management, authentication, and error handling.
-
-## Tech Stack
-
-- **Runtime**: Node.js
-- **Framework**: Express.js
-- **Database**: MongoDB with Mongoose
-- **Authentication**: JWT (JSON Web Tokens)
-- **Validation**: Zod
-- **Development**: Nodemon
-- **Environment**: dotenv
+## Overview
+The Contact Manager API is a RESTful service designed to help users manage their contacts effortlessly.
 
 ## Features
+- Add, update, and delete contacts.
+- Search contacts by name or other attributes.
+- Supports JSON format for data interchange.
 
-- CRUD operations for contacts
-- JWT-based authentication
-- Request validation with Zod
-- MongoDB integration
-- Error handling middleware
-- Async request handling
+## Getting Started
+To get started, clone the repository and check the API documentation for usage details.
+
+## License
+This project is licensed under the MIT License.
